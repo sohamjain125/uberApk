@@ -9,6 +9,12 @@ module.exports.registerUser = async (req, res, next) => {
   }
 
   const { fullname, email, password } = req.body;
+  const isUserAlreadyRegistered = await userModel.findOne({ email });
+
+  if (isUserAlreadyRegistered) {
+    return res.status(400).json({ message: "User already registered" });
+  }
+
   const hashedpassword = await userModel.hashPassword(password);
   const user = await userService.createUser({
     firstname: fullname.firstname,
@@ -43,6 +49,7 @@ module.exports.loginUser = async (req, res, next) => {
   }
 
   const token = user.generateAuthToken();
+
   res.cookie("token", token);
   res.status(200).json({ token, user });
 };
@@ -57,4 +64,4 @@ module.exports.logoutUser = async (req, res, next) => {
 
   await blacklistTokenModel.create({ token });
   res.status(200).json({ message: "Logout successful" });
-};  
+};
