@@ -17,9 +17,9 @@ const CaptainSignup = () => {
     setCaptainData({
       email: email,
       password,
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
       },
       vehicle: {
         color: vehicleColor,
