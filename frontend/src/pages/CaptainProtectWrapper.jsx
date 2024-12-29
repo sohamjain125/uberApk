@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CaptainDataContext } from "../context/CaptainContext";
+import Loader from "../components/Loader";
 
 const CaptainProtectWrapper = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -34,7 +35,7 @@ const CaptainProtectWrapper = ({ children }) => {
   }, [token]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return <>{children}</>;

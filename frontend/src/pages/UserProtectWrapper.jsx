@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/UserContext";
+import Loader from "../components/Loader";
 const UserProtectWrapper = ({ children }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const UserProtectWrapper = ({ children }) => {
   }, [token, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   // Render children only if token exists
