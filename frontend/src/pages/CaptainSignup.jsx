@@ -35,12 +35,14 @@ const CaptainSignup = () => {
         vehicleType: vehicleType, 
       },
     };
+    // console.log(captainData);
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/captains/register`,
       captainData
     );
     if (response.status === 201) {
       const data = response.data;
+      // console.log(data);
       setCaptain(data.captain);
       localStorage.setItem("token", response.data.token);
       navigate("/captain-home");
@@ -170,7 +172,7 @@ const CaptainSignup = () => {
               </option>
               <option value="car">Car</option>
               <option value="auto">Auto</option>
-              <option value="moto">Moto</option>
+              <option value="motorcycle">Moto</option>
             </select>
           </div>
 
