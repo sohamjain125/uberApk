@@ -135,7 +135,7 @@ const Home = () => {
           >
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
-          <h4 className="text-2xl font-semibold">Find a trip</h4>
+          <h4 className="text-2xl font-semibold">Find trips</h4>
           <form
             onSubmit={(e) => {
               submitHandler(e);
