@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/UserContext";
 import Loader from "../components/Loader";
+
 const UserProtectWrapper = ({ children }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -11,33 +12,35 @@ const UserProtectWrapper = ({ children }) => {
 
   useEffect(() => {
     if (!token) {
+      // console.log("No token, redirecting to login");
       navigate("/login");
+      return;
     }
-    axios
-      .get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setUser(response.data.user);
+    if (!user._id) {
+      // console.log("Fetching user profile...");
+      axios
+        .get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // console.log("User profile fetched:", response.data);
+          setUser(response.data);
           setIsLoading(false);
-        }
-      })
-      .catch((err) => {
-        localStorage.removeItem("token");
-        navigate("/login");
-      });
-  }, [token, navigate]);
+        })
+        .catch((err) => {
+          // console.error("Error fetching profile:", err);
+          localStorage.removeItem("token");
+          navigate("/login");
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [token, navigate, setUser, user._id]);
 
-  if (isLoading) {
+  if (isLoading || !token) {
     return <Loader />;
-  }
-
-  // Render children only if token exists
-  if (!token) {
-    return null; // You can display a loader or nothing during redirection
   }
 
   return <>{children}</>;

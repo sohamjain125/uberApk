@@ -65,7 +65,7 @@ module.exports.createRide = async ({
 
   vehicleType,
 }) => {
-  console.log("agaayaga");
+  
   if (!user || !pickup || !destination || !vehicleType) {
     throw new Error("user, pickup, destination and vehicleType are required");
   }

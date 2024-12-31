@@ -1,6 +1,7 @@
 const axios = require("axios");
 const captainModel = require("../models/captain.model");
-
+const dotenv = require("dotenv");
+dotenv.config();
 module.exports.getAddressCoordinate = async (address) => {
   const apiKey = process.env.GOOGLE_MAPS_API;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -58,12 +59,17 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
   }
 
   const apiKey = process.env.GOOGLE_MAPS_API;
+  // console.log(apiKey);
+  if (!apiKey) {
+    throw new Error("Google Maps API key is missing");
+  }
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
     input
   )}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
+    // console.log(response.data);
     if (response.data.status === "OK") {
       return response.data.predictions
         .map((prediction) => prediction.description)
@@ -72,7 +78,7 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
       throw new Error("Unable to fetch suggestions");
     }
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
     throw err;
   }
 };
